@@ -105,3 +105,6 @@ venv.bak/
 
 *.iml
 .idea/
+
+config.ini
+out/
