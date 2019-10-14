@@ -1,0 +1,52 @@
+<h3>VictorOps</h3>
+<ac:structured-macro ac:macro-id="4135db6b-ec7c-4e24-b0f1-c8271a42dddb" ac:name="style" ac:schema-version="1">
+    <ac:plain-text-body><![CDATA[.non_work_hours{
+        background: #FFCCCC;
+        color: red;
+        }]]></ac:plain-text-body>
+</ac:structured-macro>
+
+<p>Incidents count: {{ statistical_analysis['count'] }}</p>
+
+<table>
+    <thead>
+        <tr>
+            <th>IncidentID</th>
+            <th>IncidentName</th>
+            <th>Date</th>
+            <th>Time to Acknowledge [s]</th>
+            <th>Time to Resolve [s]</th>
+            <th>In work hours</th>
+            <th>Cause</th>
+            <th>Links</th>
+        </tr>
+    </thead>
+    <tbody>{% for incident in incidents: %}
+        <tr class="{% print('non_work_hours ' if not incident['in_work_hours'] else '')%}">
+
+            <td>{{ incident['incidentNumber'] }}</td>
+            <td>{{ incident['entityId'] }}</td>
+            <td>{% print(incident['triggeredDate'].strftime("%d.%m.%Y %H:%M:%S") if 'triggeredDate' in incident.keys() else "") %}</td>
+            <td>{{ incident.get('TTA', 'N/A') }}</td>
+            <td>{{ incident.get('TTR', 'N/A') }}</td>
+            <td>{% print('YES' if incident.get('in_work_hours', True) else 'NO')%}</td>
+            <td></td>
+            <td>
+                <a href="https://portal.victorops.com/client/dreamlab/popoutIncident?incidentName={{ incident['incidentNumber'] }}" target="_blank">VO</a><span> | </span>
+                <a href="http://jira.grupa.onet/issues/?jql=summary~%22VO%3A{{ incident['incidentNumber'] }}%22" target="_blank">SD</a>
+            </td>
+        </tr>{% endfor %}
+    </tbody>
+    <tfoot>
+        <tr>
+            <td></td>
+            <td></td>
+            <td>mean:</td>
+            <td>{{ statistical_analysis['mtta'] }}</td>
+            <td>{{ statistical_analysis['mttr'] }}</td>
+            <td>{{ statistical_analysis['in_work_hours'] }}/{{ statistical_analysis['count'] }}</td>
+            <td></td>
+            <td></td>
+        </tr>
+    </tfoot>
+</table>
