@@ -19,7 +19,7 @@ class VictorOpsAPI:
         if not end_date:
             end_date = datetime.datetime.now().isoformat()
 
-        url = "/api-reporting/v2/incidents?routingKey=%s&startedAfter=%s&startedBefore=%s&limit=200" % (routing_key, start_date.isoformat(), end_date)
+        url = "/api-reporting/v2/incidents?routingKey=%s&startedAfter=%s&startedBefore=%s&limit=100" % (routing_key, start_date.isoformat(), end_date)
 
         self.client.request("GET", url,
                             headers={"X-VO-Api-Id": self.application_id,
