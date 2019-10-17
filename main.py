@@ -67,12 +67,11 @@ def main():
         autoescape=select_autoescape(['html', 'xml'])
     )
 
-    template = env.get_template("mytemplate.html")
-
     # configuration
     config = configparser.ConfigParser()
     config.read(args.config_file)
 
+    template = env.get_template(config["Generator"]["template"])
 
     # Victor
     victor_ops_api = VictorOpsAPI(config['VictorOps']['APP_ID'], config['VictorOps']['API_KEY'])
@@ -111,7 +110,7 @@ def main():
     statistical_analysis = analizer.get_statistical_analysis(incidents)
 
     logger.debug(repr(incidents))
-    output = template.render(the='variables', go='here', incidents=incidents, statistical_analysis=statistical_analysis)
+    output = template.render(vo_client_name=config["VictorOps"]["CLIENT_NAME"], incidents=incidents, statistical_analysis=statistical_analysis)
 
     with open(config["Generator"]["output_file"], "w") as file:
         file.write(output)

@@ -10,16 +10,16 @@
 
 <table>
     <thead>
-        <tr>
-            <th>IncidentID</th>
-            <th>IncidentName</th>
-            <th>Date</th>
-            <th>Time to Acknowledge [s]</th>
-            <th>Time to Resolve [s]</th>
-            <th>In work hours</th>
-            <th>Cause</th>
-            <th>Links</th>
-        </tr>
+    <tr>
+        <th>IncidentID</th>
+        <th>IncidentName</th>
+        <th>Date</th>
+        <th>Time to Acknowledge [s]</th>
+        <th>Time to Resolve [s]</th>
+        <th>In work hours</th>
+        <th>Cause</th>
+        <th>Links</th>
+    </tr>
     </thead>
     <tbody>{% for incident in incidents: %}
         <tr class="{% print('non_work_hours ' if not incident['in_work_hours'] else '')%}">
@@ -32,21 +32,20 @@
             <td>{% print('YES' if incident.get('in_work_hours', True) else 'NO')%}</td>
             <td></td>
             <td>
-                <a href="https://portal.victorops.com/client/dreamlab/popoutIncident?incidentName={{ incident['incidentNumber'] }}" target="_blank">VO</a><span> | </span>
-                <a href="http://jira.grupa.onet/issues/?jql=summary~%22VO%3A{{ incident['incidentNumber'] }}%22" target="_blank">SD</a>
+                <a href="https://portal.victorops.com/client/{{ vo_client_name }}/popoutIncident?incidentName={{ incident['incidentNumber'] }}" target="_blank">VO</a><span> | </span>
             </td>
         </tr>{% endfor %}
     </tbody>
     <tfoot>
-        <tr>
-            <td></td>
-            <td></td>
-            <td>mean:</td>
-            <td>{{ statistical_analysis['mtta'] }}</td>
-            <td>{{ statistical_analysis['mttr'] }}</td>
-            <td>{{ statistical_analysis['in_work_hours'] }}/{{ statistical_analysis['count'] }}</td>
-            <td></td>
-            <td></td>
-        </tr>
+    <tr>
+        <td></td>
+        <td></td>
+        <td>mean:</td>
+        <td>{{ statistical_analysis['mtta'] }}</td>
+        <td>{{ statistical_analysis['mttr'] }}</td>
+        <td>{{ statistical_analysis['in_work_hours'] }}/{{ statistical_analysis['count'] }}</td>
+        <td></td>
+        <td></td>
+    </tr>
     </tfoot>
 </table>
